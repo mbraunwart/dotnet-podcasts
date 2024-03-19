@@ -44,6 +44,7 @@ jobs:
           echo "ACR_USERNAME=$(terraform output -raw acr_username)" >> $GITHUB_OUTPUT
 
           password=$(terraform output -raw acr_password)
+          echo $password
           echo "::add-mask::$password"
           encrypted_password=$(gpg --symmetric --batch --passphrase "${{ secrets.SECRETS_PASS_PHRASE }}" --output - <(echo "$password") | base64 -w0)
 
