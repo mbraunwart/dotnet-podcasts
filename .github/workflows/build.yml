@@ -26,15 +26,15 @@ jobs:
 
       - name: Initialize Terraform
         run: terraform init -upgrade
-        working-directory: ./infra/api
+        working-directory: ./infra/acr
 
       - name: Plan Terraform
         run: terraform validate; terraform plan -no-color
-        working-directory: ./infra/api
+        working-directory: ./infra/acr
 
       - name: Apply Terraform
         run: terraform apply -auto-approve
-        working-directory: ./infra/api
+        working-directory: ./infra/acr
 
       - name: Get Terraform Outputs
         id: tf-outputs
@@ -43,7 +43,7 @@ jobs:
           echo "ACR_LOGIN_SERVER=$(terraform output -raw acr_login_server)" >> $GITHUB_ENV
           echo "ACR_USERNAME=$(terraform output -raw acr_username)" >> $GITHUB_ENV
           echo "ACR_PASSWORD=$(terraform output -raw acr_password)" >> $GITHUB_ENV
-        working-directory: ./infra/api
+        working-directory: ./infra/acr
 
   build-application:
     runs-on: ubuntu-latest
