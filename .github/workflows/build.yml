@@ -11,10 +11,10 @@ jobs:
   provision-acr:
     runs-on: ubuntu-latest
     outputs:
-      acr_name: ${{ steps.tf-outputs.outputs.ACR_NAME }}
-      acr_login_server: ${{ steps.tf-outputs.outputs.ACR_LOGIN_SERVER }}
-      acr_username: ${{ steps.tf-outputs.outputs.ACR_USERNAME }}
-      acr_password: ${{ steps.tf-outputs.outputs.ACR_PASSWORD }}
+      acr_name: ${{ steps.tf_outputs.outputs.ACR_NAME }}
+      acr_login_server: ${{ steps.tf_outputs.outputs.ACR_LOGIN_SERVER }}
+      acr_username: ${{ steps.tf_outputs.outputs.ACR_USERNAME }}
+      acr_password: ${{ steps.tf_outputs.outputs.ACR_PASSWORD }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -37,15 +37,16 @@ jobs:
         working-directory: ./infra/acr
 
       - name: Get Terraform Outputs
-        id: tf-outputs
+        id: tf_outputs
         run: |
           echo "ACR_NAME=$(terraform output -raw acr_name)" >> $GITHUB_OUTPUT
           echo "ACR_LOGIN_SERVER=$(terraform output -raw acr_login_server)" >> $GITHUB_OUTPUT
           echo "ACR_USERNAME=$(terraform output -raw acr_username)" >> $GITHUB_OUTPUT
+
           password="$(terraform output -raw acr_password)"
           echo "::add-mask::$password"
           encrpyted_password=$(gpg --symmetric --batch --passphrase "${{ secrets.SECRETS_PASS_PHRASE}}" --output - <(echo "$password") | base64 -w0)
-          echo $encrpyted_password
+          
           echo "ACR_PASSWORD=$encrypted_password" >> $GITHUB_OUTPUT
         working-directory: ./infra/acr
 
