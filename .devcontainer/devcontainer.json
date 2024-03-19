@@ -1,0 +1,49 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "Ubuntu-dotnet",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/base:focal",
+	"features": {
+		"ghcr.io/devcontainers/features/azure-cli:1": {},
+		"ghcr.io/devcontainers/features/dotnet:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {},
+		"ghcr.io/dhoeric/features/terraform-docs:1": {},
+		"ghcr.io/stuartleeks/dev-container-features/azure-cli-persistence:0": {},
+		"ghcr.io/jlaundry/devcontainer-features/azure-functions-core-tools:1": {},
+		"ghcr.io/jsburckhardt/devcontainer-features/azd:1": {},
+		"ghcr.io/devcontainers/features/terraform:1": {},
+		"ghcr.io/devcontainers-contrib/features/terraform-asdf:2": {},
+		"ghcr.io/devcontainers-contrib/features/tfcdk-cli:1": {},
+		"ghcr.io/joshuanianji/devcontainer-features/terraform-cli-persistence:0": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	},
+	"customizations": {
+		"extensions": [
+			"alexcvzz.vscode-sqlite",
+			"ms-dotnettools.csharp",
+			"ms-dotnettools.vscode-dotnet-runtime",
+			"ms-dotnettools.dotnet-interactive-vscode",
+			"ms-dotnettools.vscode-dotnet-pack",
+			"ms-dotnettools.csdevkit",
+			"ms-azuretools.vscode-docker",
+			"ms-mssql.sql-database-projects-vscode",
+			"formulahendry.dotnet-test-explorer",
+			"ms-vscode.vscode-node-azure-pack"
+		],
+	},
+	"mounts": [
+		"source=profile,target=/root,type=volume",
+		"target=/root/.vscode-server,type=volume"
+	],
+	"remoteUser": "root",
+	"runArgs": ["--env-file", ".devcontainer/.env"],
+
+	// onstartcommand that installs lsd
+	"postCreateCommand": "curl -L https://github.com/lsd-rs/lsd/releases/download/0.23.1/lsd_0.23.1_amd64.deb  -o lsd_0.23.1_amd64.deb && dpkg -i lsd_0.23.1_amd64.deb && rm lsd_0.23.1_amd64.deb",
+	"postStartCommand": "dotnet restore 'NetPodcast.sln' -f",
+	
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+}
