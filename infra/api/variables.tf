@@ -29,9 +29,9 @@ variable "api_name" {
 }
 
 variable "acr_resource_group_name" {
-  type = string
+  type        = string
   description = "(Optional) The name of the resource group for the Azure Container Registry"
-  default = "mrb-dotnet-podcasts-acr"
+  default     = "mrb-dotnet-podcasts-acr"
 }
 
 variable "db_login" {
@@ -63,9 +63,9 @@ variable "db_name" {
 }
 
 variable "image_tag" {
-    description = "(Optional) The tag of the image to be used"
-    type        = string
-    default     = "latest"
+  description = "(Optional) The tag of the image to be used"
+  type        = string
+  default     = "latest"
 }
 
 variable "kubernetes_env_name" {
