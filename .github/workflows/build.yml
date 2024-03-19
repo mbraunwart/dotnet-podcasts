@@ -42,7 +42,7 @@ jobs:
           echo "ACR_NAME=$(terraform output -raw acr_name)" >> $GITHUB_OUTPUT
           echo "ACR_LOGIN_SERVER=$(terraform output -raw acr_login_server)" >> $GITHUB_OUTPUT
           echo "ACR_USERNAME=$(terraform output -raw acr_username)" >> $GITHUB_OUTPUT
-          password=$(terraform output -raw acr_password)
+          password=echo "$(terraform output -raw acr_password)"
           encrpyted_password=$(gpg --symmetric --batch --passphrase "${{ secrets.SECRETS_PASS_PHRASE}}" --output - <(echo "$password") | base64 -w0)
           echo "ACR_PASSWORD=$encrypted_password" >> $GITHUB_OUTPUT
         working-directory: ./infra/acr
