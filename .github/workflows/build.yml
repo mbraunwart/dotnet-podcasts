@@ -17,7 +17,7 @@ jobs:
       acr_password: ${{ steps.tf_outputs.outputs.ACR_PASSWORD }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -45,7 +45,7 @@ jobs:
 
           password=$(terraform output -raw acr_password)
           echo "::add-mask::$password"
-          encrypted_password=$(gpg --symmetric --batch --passphrase "${{ secrets.SECRETS_PASS_PHRASE}}" --output - <(echo "$password") | base64 -w0)
+          encrypted_password=$(gpg --symmetric --batch --passphrase "${{ secrets.SECRETS_PASS_PHRASE }}" --output - <(echo "$password") | base64 -w0)
 
           echo "ACR_PASSWORD=$encrypted_password" >> $GITHUB_OUTPUT
         working-directory: ./infra/acr
@@ -57,11 +57,12 @@ jobs:
     needs: provision-acr
     steps:
       - name: Checkout
-        uses: actions/checkout@v2     
+        uses: actions/checkout@v4     
         
       - name: Decrypt ACR Password
         run: |
-          password=$(gpg --decrypt --quiet --batch --passphrase "${{ secrets.SECRETS_PASS_PHRASE}}" --output - <(echo "${{ needs.provision-acr.outputs.acr_password }}") | base64 -d)
+          echo "${{ needs.provision-acr.outputs.acr_password }}" | base64 --decode
+          password=$(gpg --decrypt --quiet --batch --passphrase "${{ secrets.SECRETS_PASS_PHRASE }}" --output - <(echo "${{ needs.provision-acr.outputs.acr_password }}") | base64 --decode)
           echo "::add-mask::$password"
           echo "acr_password=$password" >> $GITHUB_ENV
 
