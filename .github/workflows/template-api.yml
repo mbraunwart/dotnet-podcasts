@@ -19,7 +19,7 @@ jobs:
           enable-AzPSSession: true
 
       - name: Deploy ACR
-        uses: azure/powershell@v1
+        uses: azure/powershell@v2
         with:
           azPSVersion: "3.1.0"
           inlineScript: |
@@ -53,7 +53,7 @@ jobs:
         run: dotnet publish -c Release -r linux-x64 /t:PublishContainer src/Services/Podcasts/Podcast.Ingestion.Worker/Podcast.Ingestion.Worker.csproj -p ContainerRegistry=${{ secrets.ACR_NAME }}.azurecr.io -p ContainerImageTag=${{ github.sha }}
 
       - name: Deploy Container Apps
-        uses: azure/powershell@v1
+        uses: azure/powershell@v2
         with:
           azPSVersion: "3.1.0"
           failOnStandardError: true
@@ -78,7 +78,7 @@ jobs:
             if( $LASTEXITCODE -ne 0 ) { exit -1 }
 
       - name: Upload Images
-        uses: azure/powershell@v1
+        uses: azure/powershell@v2
         with:
           azPSVersion: "3.1.0"
           inlineScript: |
