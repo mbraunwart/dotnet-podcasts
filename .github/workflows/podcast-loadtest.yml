@@ -32,7 +32,7 @@ jobs:
           azPSVersion: "latest"      
           
       - name: Create Azure Load Testing resource
-        uses: azure/arm-deploy@v1
+        uses: azure/arm-deploy@v2
         with:
           resourceGroupName: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
           template: ./Test/ARMTemplate/template.json
