@@ -26,7 +26,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Set backend env variables
-        uses: azure/powershell@v1
+        uses: azure/powershell@v2
         with:
           azPSVersion: "latest"
           inlineScript: |
@@ -66,7 +66,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy Bicep template
-        uses: azure/powershell@v1
+        uses: azure/powershell@v2
         with:
           azPSVersion: "3.1.0"
           inlineScript: |
